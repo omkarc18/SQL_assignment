@@ -18,13 +18,9 @@ LIMIT 5;
 
 -- 3.	What is the split between cash on delivery and prepaid
 
-SELECT
-    payment_mode,
-    COUNT(*) AS order_count
-FROM
-    orders
-GROUP BY
-    payment_mode;
+SELECT payment_mode, COUNT(*) AS order_count
+FROM orders
+GROUP BY payment_mode;
 
 -- 4.	Which 10 products were most purchased (ranked highest to lowest)
 
@@ -51,16 +47,14 @@ WHERE o.order_date >= DATE_SUB(CURDATE(), INTERVAL N DAY);
 
 -- 7.	If spend on marketing is assumed to be X rupees, how much profit / loss have we made in last N days 
 
-SELECT
-  (SUM(o.quantity * p.selling_price) - X) AS profit_or_loss
+SELECT (SUM(o.quantity * p.selling_price) - X) AS profit_or_loss
 FROM orders o
 JOIN products p ON o.product_id = p.id
 WHERE o.order_date >= DATE_SUB(CURDATE(), INTERVAL N DAY);
 
 -- 8.	What is our repeat rate in last N days
 
-SELECT
-  (COUNT(DISTINCT r.user_id) / COUNT(DISTINCT o.user_id)) * 100 AS repeat_rate
+SELECT (COUNT(DISTINCT r.user_id) / COUNT(DISTINCT o.user_id)) * 100 AS repeat_rate
 FROM (
   SELECT user_id
   FROM orders
